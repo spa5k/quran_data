@@ -1,0 +1,332 @@
+[
+    {
+        "juz": 1,
+        "start": {
+            "chapter": 1,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 2,
+            "verse": 141
+        }
+    },
+    {
+        "juz": 2,
+        "start": {
+            "chapter": 2,
+            "verse": 142
+        },
+        "end": {
+            "chapter": 2,
+            "verse": 252
+        }
+    },
+    {
+        "juz": 3,
+        "start": {
+            "chapter": 2,
+            "verse": 253
+        },
+        "end": {
+            "chapter": 3,
+            "verse": 92
+        }
+    },
+    {
+        "juz": 4,
+        "start": {
+            "chapter": 3,
+            "verse": 93
+        },
+        "end": {
+            "chapter": 4,
+            "verse": 23
+        }
+    },
+    {
+        "juz": 5,
+        "start": {
+            "chapter": 4,
+            "verse": 24
+        },
+        "end": {
+            "chapter": 4,
+            "verse": 147
+        }
+    },
+    {
+        "juz": 6,
+        "start": {
+            "chapter": 4,
+            "verse": 148
+        },
+        "end": {
+            "chapter": 5,
+            "verse": 81
+        }
+    },
+    {
+        "juz": 7,
+        "start": {
+            "chapter": 5,
+            "verse": 82
+        },
+        "end": {
+            "chapter": 6,
+            "verse": 110
+        }
+    },
+    {
+        "juz": 8,
+        "start": {
+            "chapter": 6,
+            "verse": 111
+        },
+        "end": {
+            "chapter": 7,
+            "verse": 87
+        }
+    },
+    {
+        "juz": 9,
+        "start": {
+            "chapter": 7,
+            "verse": 88
+        },
+        "end": {
+            "chapter": 8,
+            "verse": 40
+        }
+    },
+    {
+        "juz": 10,
+        "start": {
+            "chapter": 8,
+            "verse": 41
+        },
+        "end": {
+            "chapter": 9,
+            "verse": 92
+        }
+    },
+    {
+        "juz": 11,
+        "start": {
+            "chapter": 9,
+            "verse": 93
+        },
+        "end": {
+            "chapter": 11,
+            "verse": 5
+        }
+    },
+    {
+        "juz": 12,
+        "start": {
+            "chapter": 11,
+            "verse": 6
+        },
+        "end": {
+            "chapter": 12,
+            "verse": 52
+        }
+    },
+    {
+        "juz": 13,
+        "start": {
+            "chapter": 12,
+            "verse": 53
+        },
+        "end": {
+            "chapter": 14,
+            "verse": 52
+        }
+    },
+    {
+        "juz": 14,
+        "start": {
+            "chapter": 15,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 16,
+            "verse": 128
+        }
+    },
+    {
+        "juz": 15,
+        "start": {
+            "chapter": 17,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 18,
+            "verse": 74
+        }
+    },
+    {
+        "juz": 16,
+        "start": {
+            "chapter": 18,
+            "verse": 75
+        },
+        "end": {
+            "chapter": 20,
+            "verse": 135
+        }
+    },
+    {
+        "juz": 17,
+        "start": {
+            "chapter": 21,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 22,
+            "verse": 78
+        }
+    },
+    {
+        "juz": 18,
+        "start": {
+            "chapter": 23,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 25,
+            "verse": 20
+        }
+    },
+    {
+        "juz": 19,
+        "start": {
+            "chapter": 25,
+            "verse": 21
+        },
+        "end": {
+            "chapter": 27,
+            "verse": 55
+        }
+    },
+    {
+        "juz": 20,
+        "start": {
+            "chapter": 27,
+            "verse": 56
+        },
+        "end": {
+            "chapter": 29,
+            "verse": 45
+        }
+    },
+    {
+        "juz": 21,
+        "start": {
+            "chapter": 29,
+            "verse": 46
+        },
+        "end": {
+            "chapter": 33,
+            "verse": 30
+        }
+    },
+    {
+        "juz": 22,
+        "start": {
+            "chapter": 33,
+            "verse": 31
+        },
+        "end": {
+            "chapter": 36,
+            "verse": 27
+        }
+    },
+    {
+        "juz": 23,
+        "start": {
+            "chapter": 36,
+            "verse": 28
+        },
+        "end": {
+            "chapter": 39,
+            "verse": 31
+        }
+    },
+    {
+        "juz": 24,
+        "start": {
+            "chapter": 39,
+            "verse": 32
+        },
+        "end": {
+            "chapter": 41,
+            "verse": 46
+        }
+    },
+    {
+        "juz": 25,
+        "start": {
+            "chapter": 41,
+            "verse": 47
+        },
+        "end": {
+            "chapter": 45,
+            "verse": 37
+        }
+    },
+    {
+        "juz": 26,
+        "start": {
+            "chapter": 46,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 51,
+            "verse": 30
+        }
+    },
+    {
+        "juz": 27,
+        "start": {
+            "chapter": 51,
+            "verse": 31
+        },
+        "end": {
+            "chapter": 57,
+            "verse": 29
+        }
+    },
+    {
+        "juz": 28,
+        "start": {
+            "chapter": 58,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 66,
+            "verse": 12
+        }
+    },
+    {
+        "juz": 29,
+        "start": {
+            "chapter": 67,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 77,
+            "verse": 50
+        }
+    },
+    {
+        "juz": 30,
+        "start": {
+            "chapter": 78,
+            "verse": 1
+        },
+        "end": {
+            "chapter": 114,
+            "verse": 6
+        }
+    }
+]
