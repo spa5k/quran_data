@@ -15,9 +15,21 @@ import (
 
 func main() {
 	var rootCmd = &cobra.Command{Use: "quran_data"}
+	var edition string
+
+	var translationsCmd = &cobra.Command{
+		Use:   "translations",
+		Short: "Fetch and insert translations data",
+		Run: func(cmd *cobra.Command, args []string) {
+			translations.InsertTranslationsData(&edition)
+		},
+	}
+	translationsCmd.Flags().StringVarP(&edition, "edition", "e", "", "Specify the edition for which to fetch translations")
+
+	rootCmd.AddCommand(translationsCmd)
 	rootCmd.AddCommand(
 		makeCmd("editions", "Insert editions data", editions.InsertEditionsData),
-		makeCmd("translations", "Insert translations data", translations.InsertTranslationsData),
+		// makeCmd("translations", "Insert translations data", translations.InsertTranslationsData),
 		makeCmd("juz", "Download and insert Juz data", juz.DownloadAndInsertJuz),
 		makeCmd("ayahinfo", "Fetch and insert Ayah info", ayah.FetchAndInsertAyahInfo),
 		makeCmd("sajdah", "Fetch and insert Sajdah info", ayah.FetchAndInsertSajdah),
@@ -45,7 +57,7 @@ func makeCmd(name, description string, action func()) *cobra.Command {
 func runAll() {
 	fmt.Println("Running all data import functions sequentially...")
 	editions.InsertEditionsData()
-	translations.InsertTranslationsData()
+	translations.InsertTranslationsData(nil)
 	juz.DownloadAndInsertJuz()
 	ayah.FetchAndInsertAyahInfo()
 	ayah.FetchAndInsertSajdah()

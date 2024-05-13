@@ -74,7 +74,58 @@ func findJuzNumber(mappings []JuzMapping, surah, ayah int) int {
 	return 0 // Default to 0 if no matching Juz is found
 }
 
-func InsertTranslationsData() {
+// Enable these editions before running this function
+var enabledEditions = []string{
+	"eng-mustafakhattaba",
+	"eng-ummmuhammad",
+}
+
+func enableEditions(extraEdition string) {
+	db, err := sql.Open("sqlite", "./db/quran.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	tx, err := db.Begin()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	stmt, err := tx.Prepare("UPDATE edition SET enabled = 1 WHERE name = ?")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer stmt.Close()
+
+	for _, edition := range enabledEditions {
+		_, err := stmt.Exec(edition)
+		if err != nil {
+			tx.Rollback()
+			log.Fatal(err)
+		}
+	}
+
+	// Enable extra edition if provided
+	if extraEdition != "" {
+		println("Enabling extra edition " + extraEdition)
+		_, err := stmt.Exec(extraEdition)
+		if err != nil {
+			tx.Rollback()
+			log.Fatal(err)
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Enabled editions successfully")
+}
+
+func InsertTranslationsData(extraEdition *string) {
+	enableEditions(*extraEdition)
+
 	db, err := sql.Open("sqlite", "./db/quran.db")
 	if err != nil {
 		log.Fatal(err)
@@ -86,7 +137,7 @@ func InsertTranslationsData() {
 		log.Fatal(err)
 	}
 
-	rows, err := db.Query("SELECT id, name, source, enabled FROM edition")
+	rows, err := db.Query("SELECT id, name, source, enabled FROM edition WHERE enabled = 1")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -98,7 +149,6 @@ func InsertTranslationsData() {
 		if err := rows.Scan(&edition.ID, &edition.Name, &edition.Source, &edition.Enabled); err != nil {
 			log.Fatal(err)
 		}
-		println(edition.Name)
 		editions = append(editions, edition)
 	}
 
@@ -133,7 +183,7 @@ func InsertTranslationsData() {
 			log.Fatal(err)
 		}
 
-		stmt, err := tx.Prepare("INSERT INTO translation (surah_number, ayah_number, edition_id, text, juz_number) VALUES (?, ?, ?, ?, ?)")
+		stmt, err := tx.Prepare("INSERT OR IGNORE INTO translation (surah_number, ayah_number, edition_id, text, juz_number) VALUES (?, ?, ?, ?, ?)")
 		if err != nil {
 			log.Fatal(err)
 		}
