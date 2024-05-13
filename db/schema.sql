@@ -4,8 +4,7 @@ CREATE TABLE IF NOT EXISTS "ayah" (
     "surah_number" INTEGER NOT NULL,
     "ayah_number" INTEGER NOT NULL,
     "edition_id" INTEGER NOT NULL,
-    "text" TEXT NOT NULL,
-    "tajweed" TEXT
+    "text" TEXT NOT NULL
 );
 CREATE UNIQUE INDEX "ayah_surah_number_ayah_number_edition_id_unique" ON "ayah" ("surah_number", "ayah_number", "edition_id");
 CREATE TABLE IF NOT EXISTS "ayah_info" (
@@ -59,8 +58,7 @@ CREATE TABLE IF NOT EXISTS "surah" (
     "ayah_end" INTEGER NOT NULL,
     "revelation_place" TEXT NOT NULL,
     "page_start" INTEGER NOT NULL,
-    "page_end" INTEGER NOT NULL,
-    "juz_number" INTEGER
+    "page_end" INTEGER NOT NULL
 );
 CREATE UNIQUE INDEX "surah_surah_number_unique" ON "surah" ("surah_number");
 CREATE TABLE IF NOT EXISTS "translation" (
@@ -72,6 +70,13 @@ CREATE TABLE IF NOT EXISTS "translation" (
     "juz_number" INTEGER
 );
 CREATE UNIQUE INDEX "translation_surah_number_ayah_number_edition_id_unique" ON "translation" ("surah_number", "ayah_number", "edition_id");
+CREATE TABLE IF NOT EXISTS "tajweed" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "surah_number" INTEGER NOT NULL,
+    "ayah_number" INTEGER NOT NULL,
+    "tajweed" TEXT NOT NULL,
+    UNIQUE(surah_number, ayah_number)
+);
 -- Dbmate schema migrations
 INSERT INTO "schema_migrations" (version) VALUES
   ('20240512144958'),
@@ -80,4 +85,5 @@ INSERT INTO "schema_migrations" (version) VALUES
   ('20240512145749'),
   ('20240512145817'),
   ('20240512145841'),
-  ('20240512145926');
+  ('20240512145926'),
+  ('20240513143035');

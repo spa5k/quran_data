@@ -22,10 +22,11 @@ type Quran struct {
 }
 
 type QuranText struct {
-	Surah   int
-	Ayah    int
-	Text    string
-	Tajweed string
+	Surah     int
+	Ayah      int
+	Text      string
+	Tajweed   string
+	EditionID int
 }
 
 var sources = []string{"ara-quranindopak", "ara-quranuthmanihaf", "ara-quranwarsh", "ara-quranqaloon", "ara-quransimple"}
@@ -37,47 +38,47 @@ func FetchAndInsertQuranText() {
 	}
 	defer db.Close()
 
-	tx, err := db.Begin()
-	if err != nil {
-		log.Fatal("Error beginning transaction:", err)
-	}
-
-	stmt, err := tx.Prepare("INSERT INTO ayah (surah_number, ayah_number, edition_id, text) VALUES (?, ?, ?, ?)")
-	if err != nil {
-		log.Fatal("Error preparing statement:", err)
-	}
-	defer stmt.Close()
-
-	finalRes := make([]QuranText, 0)
-
-	// Fetch text for each source and update finalRes
 	for _, source := range sources {
+		println("Fetching data for", source)
+
+		// Start a new transaction for each source
+		tx, err := db.Begin()
+		if err != nil {
+			log.Fatal("Error beginning transaction:", err)
+		}
+
+		stmt, err := tx.Prepare("INSERT INTO ayah (surah_number, ayah_number, edition_id, text) VALUES (?, ?, ?, ?)")
+		if err != nil {
+			log.Fatal("Error preparing statement:", err)
+		}
+		defer stmt.Close()
+
+		var sourceID int
+		err = db.QueryRow("SELECT id FROM edition WHERE name = ?", source).Scan(&sourceID)
+		if err != nil {
+			log.Printf("Error fetching source ID for %s: %v", source, err)
+			tx.Rollback()
+			continue
+		}
+
 		url := fmt.Sprintf("https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/%s.json", source)
 		data, err := fetchQuran(url)
 		if err != nil {
 			log.Fatal("Error fetching data:", err)
 		}
 
-		// sourceKey[source]
-		for i, ayah := range data.Quran {
-			if len(finalRes) <= i {
-				finalRes = append(finalRes, QuranText{Surah: ayah.Chapter, Ayah: ayah.Verse, Text: ayah.Text})
+		for _, ayah := range data.Quran {
+			_, err = stmt.Exec(ayah.Chapter, ayah.Verse, sourceID, ayah.Text)
+			if err != nil {
+				log.Printf("Error executing insert for %d:%d: %v", ayah.Chapter, ayah.Verse, err)
+				tx.Rollback()
+				break
 			}
-			finalRes[i].Text = ayah.Text // Assuming Uthmani text as default
 		}
-	}
 
-	// Insert each Quran text into the database
-	for _, ayah := range finalRes {
-		_, err = stmt.Exec(ayah.Surah, ayah.Ayah, 1, ayah.Text) // Example: using Uthmani text
-		if err != nil {
-			tx.Rollback()
-			log.Fatal("Error executing insert:", err)
+		if err := tx.Commit(); err != nil {
+			log.Printf("Error committing transaction: %v", err)
 		}
-	}
-
-	if err := tx.Commit(); err != nil {
-		log.Fatal("Error committing transaction:", err)
 	}
 
 	fmt.Println("Quran text added")
