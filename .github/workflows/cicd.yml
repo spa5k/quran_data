@@ -55,3 +55,4 @@ jobs:
         release: ${{ github.ref }}
         asset_name: quran.db
         content_type: application/octet-stream
+        tag: ${{ github.ref }}
