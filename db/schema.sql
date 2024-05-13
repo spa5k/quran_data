@@ -4,49 +4,52 @@ CREATE TABLE IF NOT EXISTS "ayah" (
     "surah_number" INTEGER NOT NULL,
     "ayah_number" INTEGER NOT NULL,
     "edition_id" INTEGER NOT NULL,
-    "text" TEXT NOT NULL
+    "text" TEXT NOT NULL,
+    FOREIGN KEY ("edition_id") REFERENCES "edition"("id"),
+    CHECK ("ayah_number" > 0)
 );
 CREATE UNIQUE INDEX "ayah_surah_number_ayah_number_edition_id_unique" ON "ayah" ("surah_number", "ayah_number", "edition_id");
 CREATE TABLE IF NOT EXISTS "ayah_info" (
-    id INTEGER not null primary key autoincrement,
-    surah_number INTEGER not null,
-    ayah_number INTEGER not null,
-    ayah_key TEXT not null,
-    hizb INTEGER not null,
-    rub_el_hizb INTEGER not null,
-    ruku INTEGER not null,
-    manzil INTEGER not null,
-    page INTEGER not null,
-    juz INTEGER not null
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "surah_number" INTEGER NOT NULL,
+    "ayah_number" INTEGER NOT NULL,
+    "ayah_key" TEXT NOT NULL,
+    "hizb" INTEGER NOT NULL,
+    "rub_el_hizb" INTEGER NOT NULL,
+    "ruku" INTEGER NOT NULL,
+    "manzil" INTEGER NOT NULL,
+    "page" INTEGER NOT NULL,
+    "juz" INTEGER NOT NULL,
+    CHECK ("ayah_number" > 0 AND "surah_number" > 0)
 );
 CREATE UNIQUE INDEX "ayah_info_surah_number_ayah_number_unique" ON "ayah_info" ("surah_number", "ayah_number");
 CREATE TABLE IF NOT EXISTS "edition" (
-    id INTEGER not null primary key autoincrement,
-    name TEXT not null,
-    author TEXT,
-    language TEXT not null,
-    direction TEXT not null,
-    source TEXT,
-    type TEXT not null,
-    enabled INTEGER not null
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "author" TEXT,
+    "language" TEXT NOT NULL,
+    "direction" TEXT NOT NULL,
+    "source" TEXT,
+    "type" TEXT NOT NULL,
+    "enabled" INTEGER NOT NULL CHECK ("enabled" IN (0, 1))
 );
-CREATE UNIQUE INDEX idx_name ON edition(name);
+CREATE UNIQUE INDEX "idx_name" ON "edition" ("name");
 CREATE TABLE IF NOT EXISTS "juz" (
-    id INTEGER not null primary key autoincrement,
-    juz_number INTEGER not null,
-    start_surah INTEGER not null,
-    start_ayah INTEGER not null,
-    end_surah INTEGER not null,
-    end_ayah INTEGER not null
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "juz_number" INTEGER NOT NULL,
+    "start_surah" INTEGER NOT NULL,
+    "start_ayah" INTEGER NOT NULL,
+    "end_surah" INTEGER NOT NULL,
+    "end_ayah" INTEGER NOT NULL
 );
 CREATE UNIQUE INDEX "juz_juz_number_unique" ON "juz" ("juz_number");
 CREATE TABLE IF NOT EXISTS "sajdah" (
-    id INTEGER not null primary key autoincrement,
-    sajdah_number INTEGER not null,
-    surah_number INTEGER not null,
-    ayah_number INTEGER not null,
-    recommended INTEGER not null,
-    obligatory INTEGER not null
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "sajdah_number" INTEGER NOT NULL,
+    "surah_number" INTEGER NOT NULL,
+    "ayah_number" INTEGER NOT NULL,
+    "recommended" INTEGER NOT NULL CHECK ("recommended" IN (0, 1)),
+    "obligatory" INTEGER NOT NULL CHECK ("obligatory" IN (0, 1))
 );
 CREATE TABLE IF NOT EXISTS "surah" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -67,7 +70,9 @@ CREATE TABLE IF NOT EXISTS "translation" (
     "ayah_number" INTEGER NOT NULL,
     "edition_id" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
-    "juz_number" INTEGER
+    "juz_number" INTEGER,
+    FOREIGN KEY ("edition_id") REFERENCES "edition"("id"),
+    FOREIGN KEY ("surah_number", "ayah_number") REFERENCES "ayah"("surah_number", "ayah_number")
 );
 CREATE UNIQUE INDEX "translation_surah_number_ayah_number_edition_id_unique" ON "translation" ("surah_number", "ayah_number", "edition_id");
 CREATE TABLE IF NOT EXISTS "tajweed" (
@@ -75,7 +80,7 @@ CREATE TABLE IF NOT EXISTS "tajweed" (
     "surah_number" INTEGER NOT NULL,
     "ayah_number" INTEGER NOT NULL,
     "tajweed" TEXT NOT NULL,
-    UNIQUE(surah_number, ayah_number)
+    UNIQUE ("surah_number", "ayah_number")
 );
 -- Dbmate schema migrations
 INSERT INTO "schema_migrations" (version) VALUES
