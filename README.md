@@ -20,7 +20,7 @@ Before you can run the CLI, ensure you have Go installed on your system. Follow 
 1. Clone the repository:
 
 ```
-git clone https://github.com/yourusername/quran_data.git
+git clone https://github.com/spa5k/quran_data.git
 cd quran_data
 ```
 
