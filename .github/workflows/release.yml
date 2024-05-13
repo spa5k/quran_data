@@ -1,6 +1,9 @@
 name: Main
 
-on: push
+on:
+  release:
+    types:
+      - created
 
 jobs:
   build-and-release:
