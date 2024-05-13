@@ -38,5 +38,6 @@ jobs:
         with:
           files: |
             ./bin/*
+            quran.db
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
