@@ -47,12 +47,9 @@ jobs:
       with:
         title: "Release ${{ github.ref }}"
 
-    - name: Upload Release Asset
-      uses:  softprops/action-gh-release@v2
+    - name: Create and Upload Release Asset
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
       with:
         files: quran.db
         token: ${{ secrets.GITHUB_TOKEN }}
-        release: ${{ github.ref }}
-        asset_name: quran.db
-        content_type: application/octet-stream
-        tag: ${{ github.ref }}
