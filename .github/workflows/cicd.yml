@@ -44,8 +44,6 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         title: "Release ${{ github.ref }}"
-        files:  |
-          quran.db
 
     - name: Upload Release Asset
       uses:  softprops/action-gh-release@v2
