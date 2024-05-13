@@ -1,12 +1,13 @@
 watch:
 	@wgo run ./cmd/main.go all
+
 build:
-	@go build -o ./bin/main ./cmd/main.go
+	GOOS=darwin GOARCH=amd64 go build -o ./bin/quran-macos ./cmd/main.go
+	GOOS=linux GOARCH=amd64 go build -o  ./bin/quran-linux ./cmd/main.go
+	GOOS=windows GOARCH=amd64 go build -o  ./bin/quran-windows.exe ./cmd/main.go
 
-
-# A function called that will be used to run the build program but will also forward the arguments to the program
 run:
-	@go run ./cmd/main.go all $(filter-out $@,$(MAKECMDGOALS))
+	./bin/quran-linux all
 
 migrateup:
 	dbmate up
