@@ -29,6 +29,7 @@ cd quran_data
 ```
 make build
 ```
+NOTE: The binaries created will have names like quran-linux, quran-macos etc, so change them accordingly.
 
 ## Usage
 
