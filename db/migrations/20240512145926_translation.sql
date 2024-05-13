@@ -8,5 +8,7 @@ CREATE TABLE "translation" (
     "juz_number" INTEGER
 );
 
+CREATE UNIQUE INDEX "translation_surah_number_ayah_number_edition_id_unique" ON "translation" ("surah_number", "ayah_number", "edition_id");
+
 -- migrate:down
 DROP table "translation";

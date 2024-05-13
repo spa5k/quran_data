@@ -154,5 +154,5 @@ func InsertTranslationsData() {
 		}
 	}
 
-	fmt.Println("Data inserted successfully")
+	fmt.Println("Translations inserted successfully")
 }

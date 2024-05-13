@@ -8,5 +8,7 @@ CREATE TABLE "juz" (
     end_ayah INTEGER not null
 );
 
+CREATE UNIQUE INDEX "juz_juz_number_unique" ON "juz" ("juz_number");
+
 -- migrate:down
 DROP TABLE "juz";

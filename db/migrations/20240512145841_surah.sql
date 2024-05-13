@@ -9,9 +9,10 @@ CREATE TABLE "surah" (
     "ayah_end" INTEGER NOT NULL,
     "revelation_place" TEXT NOT NULL,
     "page_start" INTEGER NOT NULL,
-    "page_end" INTEGER NOT NULL,
-    "juz_number" INTEGER
+    "page_end" INTEGER NOT NULL
 );
+
+CREATE UNIQUE INDEX "surah_surah_number_unique" ON "surah" ("surah_number");
 
 -- migrate:down
 DROP table "surah";

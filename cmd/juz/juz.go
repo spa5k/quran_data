@@ -215,5 +215,5 @@ func DownloadAndInsertJuz() {
 		log.Fatal("Error committing transaction:", err)
 	}
 
-	fmt.Println("Data inserted successfully")
+	fmt.Println("Juz inserted successfully")
 }

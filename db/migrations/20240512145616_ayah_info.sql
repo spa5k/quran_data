@@ -12,5 +12,7 @@ CREATE TABLE "ayah_info" (
     juz INTEGER not null
 );
 
+CREATE UNIQUE INDEX "ayah_info_surah_number_ayah_number_unique" ON "ayah_info" ("surah_number", "ayah_number");
+
 -- migrate:down
 DROP TABLE "ayah_info";

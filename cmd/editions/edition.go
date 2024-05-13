@@ -94,5 +94,5 @@ func InsertEditionsData() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Data inserted successfully")
+	fmt.Println("Editions inserted successfully")
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/spa5k/quran_data/cmd/juz"
+	"github.com/spa5k/quran_data/cmd/surah"
 )
 
 func main() {
@@ -15,5 +15,10 @@ func main() {
 	// Commit transaction
 	// editions.InsertEditionsData()
 	// translations.InsertTranslationsData()
-	juz.DownloadAndInsertJuz()
+	// juz.DownloadAndInsertJuz()
+	// ayah.FetchAndInsertAyahInfo()
+	// ayah.FetchAndInsertSajdah()
+	// ayah.FetchAndInsertQuranText()
+	// tajweed.FetchAndInsertTajweed()
+	surah.FetchAndInsertSurahs()
 }

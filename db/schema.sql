@@ -5,9 +5,9 @@ CREATE TABLE IF NOT EXISTS "ayah" (
     "ayah_number" INTEGER NOT NULL,
     "edition_id" INTEGER NOT NULL,
     "text" TEXT NOT NULL,
-    "tajweed" TEXT,
-    "juz_number" INTEGER
+    "tajweed" TEXT
 );
+CREATE UNIQUE INDEX "ayah_surah_number_ayah_number_edition_id_unique" ON "ayah" ("surah_number", "ayah_number", "edition_id");
 CREATE TABLE IF NOT EXISTS "ayah_info" (
     id INTEGER not null primary key autoincrement,
     surah_number INTEGER not null,
@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS "ayah_info" (
     page INTEGER not null,
     juz INTEGER not null
 );
+CREATE UNIQUE INDEX "ayah_info_surah_number_ayah_number_unique" ON "ayah_info" ("surah_number", "ayah_number");
 CREATE TABLE IF NOT EXISTS "edition" (
     id INTEGER not null primary key autoincrement,
     name TEXT not null,
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS "juz" (
     end_surah INTEGER not null,
     end_ayah INTEGER not null
 );
+CREATE UNIQUE INDEX "juz_juz_number_unique" ON "juz" ("juz_number");
 CREATE TABLE IF NOT EXISTS "sajdah" (
     id INTEGER not null primary key autoincrement,
     sajdah_number INTEGER not null,
@@ -60,6 +62,7 @@ CREATE TABLE IF NOT EXISTS "surah" (
     "page_end" INTEGER NOT NULL,
     "juz_number" INTEGER
 );
+CREATE UNIQUE INDEX "surah_surah_number_unique" ON "surah" ("surah_number");
 CREATE TABLE IF NOT EXISTS "translation" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "surah_number" INTEGER NOT NULL,
@@ -68,6 +71,7 @@ CREATE TABLE IF NOT EXISTS "translation" (
     "text" TEXT NOT NULL,
     "juz_number" INTEGER
 );
+CREATE UNIQUE INDEX "translation_surah_number_ayah_number_edition_id_unique" ON "translation" ("surah_number", "ayah_number", "edition_id");
 -- Dbmate schema migrations
 INSERT INTO "schema_migrations" (version) VALUES
   ('20240512144958'),
