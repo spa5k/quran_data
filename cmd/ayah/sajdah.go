@@ -28,7 +28,7 @@ type SajdasReference struct {
 }
 
 func FetchAndInsertSajdah() {
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal("Error opening database:", err)
 	}
@@ -59,7 +59,7 @@ func FetchAndInsertSajdah() {
 	}
 
 	// Prepare the SQL statement for inserting data
-	stmt, err := tx.Prepare("INSERT INTO sajdah (sajdah_number, surah_number, ayah_number, recommended, obligatory) VALUES (?, ?, ?, ?, ?)")
+	stmt, err := tx.Prepare("INSERT OR IGNORE INTO sajdah (sajdah_number, surah_number, ayah_number, recommended, obligatory) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatal("Error preparing statement:", err)
 	}

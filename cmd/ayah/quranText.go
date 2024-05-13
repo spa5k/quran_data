@@ -32,7 +32,7 @@ type QuranText struct {
 var sources = []string{"ara-quranindopak", "ara-quranuthmanihaf", "ara-quranwarsh", "ara-quranqaloon", "ara-quransimple"}
 
 func FetchAndInsertQuranText() {
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal("Error opening database:", err)
 	}
@@ -47,7 +47,7 @@ func FetchAndInsertQuranText() {
 			log.Fatal("Error beginning transaction:", err)
 		}
 
-		stmt, err := tx.Prepare("INSERT INTO ayah (surah_number, ayah_number, edition_id, text) VALUES (?, ?, ?, ?)")
+		stmt, err := tx.Prepare("INSERT OR IGNORE INTO ayah (surah_number, ayah_number, edition_id, text) VALUES (?, ?, ?, ?)")
 		if err != nil {
 			log.Fatal("Error preparing statement:", err)
 		}

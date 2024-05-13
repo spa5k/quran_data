@@ -33,8 +33,10 @@ type TranslatedName struct {
 	Name         string       `json:"name"`
 }
 
-type RevelationPlace string
-type LanguageName string
+type (
+	RevelationPlace string
+	LanguageName    string
+)
 
 const (
 	Madinah RevelationPlace = "madinah"
@@ -43,7 +45,7 @@ const (
 )
 
 func FetchAndInsertSurahs() {
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal("Error opening database:", err)
 	}
@@ -54,7 +56,7 @@ func FetchAndInsertSurahs() {
 		log.Fatal("Error beginning transaction:", err)
 	}
 
-	stmt, err := tx.Prepare("INSERT INTO surah (surah_number, name_simple, name_complex, name_arabic, ayah_start, ayah_end, revelation_place, page_start, page_end, juz_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := tx.Prepare("INSERT OR IGNORE INTO surah (surah_number, name_simple, name_complex, name_arabic, ayah_start, ayah_end, revelation_place, page_start, page_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatal("Error preparing statement:", err)
 	}
@@ -78,7 +80,7 @@ func FetchAndInsertSurahs() {
 	}
 
 	for _, chapter := range surahsResponse.Chapters {
-		_, err = stmt.Exec(chapter.ID, chapter.NameSimple, chapter.NameComplex, chapter.NameArabic, 1, chapter.VersesCount, chapter.RevelationPlace, chapter.Pages[0], chapter.Pages[len(chapter.Pages)-1], nil) // Juz number is not provided
+		_, err = stmt.Exec(chapter.ID, chapter.NameSimple, chapter.NameComplex, chapter.NameArabic, 1, chapter.VersesCount, chapter.RevelationPlace, chapter.Pages[0], chapter.Pages[len(chapter.Pages)-1]) // Juz number is not provided
 		if err != nil {
 			tx.Rollback()
 			log.Fatal("Error executing insert:", err)

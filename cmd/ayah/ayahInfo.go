@@ -28,7 +28,7 @@ type AyahAPIResponse struct {
 }
 
 func FetchAndInsertAyahInfo() {
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal("Error opening database:", err)
 	}
@@ -39,7 +39,7 @@ func FetchAndInsertAyahInfo() {
 		log.Fatal("Error beginning transaction:", err)
 	}
 
-	stmt, err := tx.Prepare("INSERT INTO ayah_info (surah_number, ayah_number, ayah_key, hizb, rub_el_hizb, ruku, manzil, page, juz) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := tx.Prepare("INSERT OR IGNORE INTO ayah_info (surah_number, ayah_number, ayah_key, hizb, rub_el_hizb, ruku, manzil, page, juz) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatal("Error preparing statement:", err)
 	}

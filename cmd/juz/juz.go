@@ -157,7 +157,7 @@ func (su *SajdaUnion) UnmarshalJSON(data []byte) error {
 
 func DownloadAndInsertJuz() {
 	// Open the database connection
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal("Error opening database:", err)
 	}
@@ -196,7 +196,7 @@ func DownloadAndInsertJuz() {
 	//     end_ayah INTEGER not null
 	// );
 	// Example of inserting chapters
-	stmt, err := tx.Prepare("INSERT INTO juz (juz_number, start_surah, start_ayah, end_surah, end_ayah) VALUES (?, ?, ?, ?, ?)")
+	stmt, err := tx.Prepare("INSERT OR IGNORE INTO juz (juz_number, start_surah, start_ayah, end_surah, end_ayah) VALUES (?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatal("Error preparing statement:", err)
 	}

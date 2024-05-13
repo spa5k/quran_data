@@ -80,8 +80,8 @@ var enabledEditions = []string{
 	"eng-ummmuhammad",
 }
 
-func enableEditions(extraEdition string) {
-	db, err := sql.Open("sqlite", "./db/quran.db")
+func enableEditions(extraEdition *string) {
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -107,9 +107,9 @@ func enableEditions(extraEdition string) {
 	}
 
 	// Enable extra edition if provided
-	if extraEdition != "" {
-		println("Enabling extra edition " + extraEdition)
-		_, err := stmt.Exec(extraEdition)
+	if extraEdition != nil && *extraEdition != "" {
+		println("Enabling extra edition " + *extraEdition)
+		_, err := stmt.Exec(*extraEdition)
 		if err != nil {
 			tx.Rollback()
 			log.Fatal(err)
@@ -124,9 +124,9 @@ func enableEditions(extraEdition string) {
 }
 
 func InsertTranslationsData(extraEdition *string) {
-	enableEditions(*extraEdition)
+	enableEditions(extraEdition)
 
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal(err)
 	}

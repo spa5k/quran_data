@@ -14,10 +14,10 @@ import (
 )
 
 func main() {
-	var rootCmd = &cobra.Command{Use: "quran_data"}
+	rootCmd := &cobra.Command{Use: "quran_data"}
 	var edition string
 
-	var translationsCmd = &cobra.Command{
+	translationsCmd := &cobra.Command{
 		Use:   "translations",
 		Short: "Fetch and insert translations data",
 		Run: func(cmd *cobra.Command, args []string) {

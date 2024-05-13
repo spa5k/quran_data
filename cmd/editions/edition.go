@@ -48,7 +48,7 @@ func GetEditionType(name string) Type {
 }
 
 func InsertEditionsData() {
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -75,7 +75,7 @@ func InsertEditionsData() {
 		log.Fatal(err)
 	}
 
-	stmt, err := tx.Prepare("INSERT INTO edition (name, author, language, direction, source, type, enabled) VALUES (?, ?, ?, ?, ?, ?, ?)")
+	stmt, err := tx.Prepare("INSERT OR IGNORE INTO edition (name, author, language, direction, source, type, enabled) VALUES (?, ?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -71,7 +71,7 @@ type TajweedRes struct {
 }
 
 func FetchAndInsertTajweed() {
-	db, err := sql.Open("sqlite", "./db/quran.db")
+	db, err := sql.Open("sqlite", "quran.db")
 	if err != nil {
 		log.Fatal("Error opening database:", err)
 	}
@@ -88,7 +88,7 @@ func FetchAndInsertTajweed() {
 	}
 
 	stmt, err := tx.Prepare(`
-        INSERT INTO tajweed (surah_number, ayah_number, tajweed) 
+        INSERT OR IGNORE INTO tajweed (surah_number, ayah_number, tajweed) 
         VALUES (?, ?, ?)
         ON CONFLICT(surah_number, ayah_number) 
         DO UPDATE SET tajweed=excluded.tajweed;
