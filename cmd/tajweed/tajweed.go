@@ -11,18 +11,6 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-// import (
-// 	"encoding/json"
-// 	"fmt"
-// 	"io"
-// 	"log"
-// 	"net/http"
-
-// 	"database/sql"
-
-// 	_ "modernc.org/sqlite"
-// )
-
 type Tajweed struct {
 	Code   int    `json:"code"`
 	Status string `json:"status"`

@@ -9,6 +9,7 @@ import (
 	"github.com/spa5k/quran_data/cmd/juz"
 	"github.com/spa5k/quran_data/cmd/surah"
 	"github.com/spa5k/quran_data/cmd/tajweed"
+	"github.com/spa5k/quran_data/cmd/timings"
 	"github.com/spa5k/quran_data/cmd/translations"
 	"github.com/spf13/cobra"
 )
@@ -36,6 +37,8 @@ func main() {
 		makeCmd("qurantext", "Fetch and insert Quran text", ayah.FetchAndInsertQuranText),
 		makeCmd("tajweed", "Fetch and insert Tajweed data", tajweed.FetchAndInsertTajweed),
 		makeCmd("surahs", "Fetch and insert Surahs data", surah.FetchAndInsertSurahs),
+		makeCmd("timings_quran", "Fetch and insert timings data", timings.FetchQuranComAyahTimings),
+		makeCmd("timings_every_ayah", "Fetch and insert timings data", timings.FetchEveryAyahTimings),
 		makeCmd("all", "Run all data import functions sequentially", runAll),
 	)
 
@@ -64,5 +67,7 @@ func runAll() {
 	ayah.FetchAndInsertQuranText()
 	tajweed.FetchAndInsertTajweed()
 	surah.FetchAndInsertSurahs()
+	timings.FetchQuranComAyahTimings()
+	timings.FetchEveryAyahTimings()
 	fmt.Println("All data import functions completed.")
 }

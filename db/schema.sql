@@ -82,6 +82,16 @@ CREATE TABLE IF NOT EXISTS "tajweed" (
     "tajweed" TEXT NOT NULL,
     UNIQUE ("surah_number", "ayah_number")
 );
+CREATE TABLE IF NOT EXISTS "reciters" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    reciter_name TEXT NOT NULL,
+    style TEXT NOT NULL,
+    slug TEXT NOT NULL,
+    translated_name TEXT NOT NULL,
+    language_name TEXT NOT NULL,
+    source TEXT NOT NULL,
+    source_id INT NOT NULL
+);
 -- Dbmate schema migrations
 INSERT INTO "schema_migrations" (version) VALUES
   ('20240512144958'),
@@ -91,4 +101,5 @@ INSERT INTO "schema_migrations" (version) VALUES
   ('20240512145817'),
   ('20240512145841'),
   ('20240512145926'),
-  ('20240513143035');
+  ('20240513143035'),
+  ('20240712151524');
