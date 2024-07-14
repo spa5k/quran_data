@@ -30,7 +30,6 @@ func main() {
 	rootCmd.AddCommand(translationsCmd)
 	rootCmd.AddCommand(
 		makeCmd("editions", "Insert editions data", editions.InsertEditionsData),
-		// makeCmd("translations", "Insert translations data", translations.InsertTranslationsData),
 		makeCmd("juz", "Download and insert Juz data", juz.DownloadAndInsertJuz),
 		makeCmd("ayahinfo", "Fetch and insert Ayah info", ayah.FetchAndInsertAyahInfo),
 		makeCmd("sajdah", "Fetch and insert Sajdah info", ayah.FetchAndInsertSajdah),
@@ -39,6 +38,8 @@ func main() {
 		makeCmd("surahs", "Fetch and insert Surahs data", surah.FetchAndInsertSurahs),
 		makeCmd("timings_quran", "Fetch and insert timings data", timings.FetchQuranComAyahTimings),
 		makeCmd("timings_every_ayah", "Fetch and insert timings data", timings.FetchEveryAyahTimings),
+		makeCmd("recitations_every_ayah", "Fetch and insert timings data", timings.FetchAndSaveEveryAyahRecitations),
+		makeCmd("recitations_quran_com", "Fetch and insert timings data", timings.FetchAndSaveDataFolderRecitations),
 		makeCmd("all", "Run all data import functions sequentially", runAll),
 	)
 
@@ -69,5 +70,10 @@ func runAll() {
 	surah.FetchAndInsertSurahs()
 	timings.FetchQuranComAyahTimings()
 	timings.FetchEveryAyahTimings()
+
+	// Fetch and save timings data from Data Folder
+	timings.FetchAndSaveDataFolderRecitations()
+	timings.FetchAndSaveEveryAyahRecitations()
+
 	fmt.Println("All data import functions completed.")
 }

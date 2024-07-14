@@ -92,6 +92,14 @@ CREATE TABLE IF NOT EXISTS "reciters" (
     source TEXT NOT NULL,
     source_id INT NOT NULL
 );
+CREATE TABLE recitations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reciter_id INTEGER NOT NULL,
+    surah_number INTEGER NOT NULL,
+    recitation_data TEXT NOT NULL,
+    FOREIGN KEY (reciter_id) REFERENCES reciters(id),
+    UNIQUE (reciter_id, surah_number)
+);
 -- Dbmate schema migrations
 INSERT INTO "schema_migrations" (version) VALUES
   ('20240512144958'),
@@ -102,4 +110,5 @@ INSERT INTO "schema_migrations" (version) VALUES
   ('20240512145841'),
   ('20240512145926'),
   ('20240513143035'),
-  ('20240712151524');
+  ('20240712151524'),
+  ('20240713151037');

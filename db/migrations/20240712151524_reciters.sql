@@ -10,4 +10,4 @@ CREATE TABLE "reciters" (
     source_id INT NOT NULL
 );
 -- migrate:down
-DROP TABLE "reciters";
+DROP TABLE "reciters"; 
