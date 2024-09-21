@@ -71,8 +71,10 @@ func FetchEveryAyahTimings() {
 }
 
 // Cache to store already fetched data
-var cache = make(map[string]bool)
-var cacheMutex sync.Mutex
+var (
+	cache      = make(map[string]bool)
+	cacheMutex sync.Mutex
+)
 
 func FetchAndSaveEveryAyahRecitations() {
 	source := "everyayah"

@@ -76,6 +76,20 @@ func FetchAndInsertQuranText() {
 			}
 		}
 
+		stmt, err = tx.Prepare("UPDATE edition SET enabled = 1 WHERE name = ?")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer stmt.Close()
+
+		for _, edition := range sources {
+			_, err := stmt.Exec(edition)
+			if err != nil {
+				tx.Rollback()
+				log.Fatal(err)
+			}
+		}
+
 		if err := tx.Commit(); err != nil {
 			log.Printf("Error committing transaction: %v", err)
 		}
