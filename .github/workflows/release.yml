@@ -4,32 +4,48 @@ on:
   release:
     types: [created]
 
-permissions:
-  contents: write
-
 jobs:
   build-and-upload:
+    permissions:
+      releases: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Set up Go
         uses: actions/setup-go@v5
+      
       - name: Build project
         run: make build
+      
       - name: Install dbmate
         run: |
-          curl -L https://github.com/amacneil/dbmate/releases/download/v1.11.0/dbmate-linux-amd64 -o dbmate
-          chmod +x dbmate
-          sudo mv dbmate /usr/local/bin/
+          sudo curl -fsSL -o /usr/local/bin/dbmate https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64
+          sudo chmod +x /usr/local/bin/dbmate
+          /usr/local/bin/dbmate --help
 
       - name: Run database migrations
         run: make migrateup
 
       - name: Run the application
         run: make run
+
+      - name: Upload quran.db to Cloudflare R2
+        run: aws s3 cp quran.db s3://quran-db/quran.db --endpoint-url ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
+
+      - name: Upload Assets to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            quran.db
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Assets
         uses: softprops/action-gh-release@v2
