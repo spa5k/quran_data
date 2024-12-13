@@ -56,8 +56,8 @@ jobs:
       - name: Calculate version
         id: calculate_version
         run: |
-          # Get the latest tag
-          LATEST_TAG=$(git describe --tags --abbrev=0)
+          # Get the latest tag or default to v0.0.0 if none
+          LATEST_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")
           echo "Latest tag: $LATEST_TAG"
           
           # Split tag into components
@@ -79,16 +79,25 @@ jobs:
               ;;
           esac
 
-          # Construct version
+          # Construct new version
           NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
 
-          # Add prerelease identifier if specified
+          # Add prerelease identifier if is_prerelease is true
           if [ "${{ github.event.inputs.is_prerelease }}" = "true" ]; then
             NEW_VERSION="${NEW_VERSION}-${{ github.event.inputs.prerelease_id }}"
           fi
 
           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
           echo "Calculated version: $NEW_VERSION"
+
+      - name: Create GitHub Release
+        uses: elgohr/Github-Release-Action@v5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: ${{ env.VERSION }}
+          tag: ${{ env.VERSION }}
+          prerelease: ${{ github.event.inputs.is_prerelease }}
 
       - name: Rename quran.db to include version
         run: |
@@ -103,6 +112,7 @@ jobs:
       - name: Upload quran-${{ env.VERSION }}.db to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.VERSION }}
           files: |
             quran-${{ env.VERSION }}.db
         env:
@@ -111,6 +121,7 @@ jobs:
       - name: Upload bin/* and quran-${{ env.VERSION }}.db to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.VERSION }}
           files: |
             ./bin/*
             quran-${{ env.VERSION }}.db
