@@ -1,8 +1,27 @@
 name: Release Assets Workflow
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Choose the release type"
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+        default: patch
+      is_prerelease:
+        description: "Is this a pre-release?"
+        required: false
+        type: boolean
+        default: false
+      prerelease_id:
+        description: "Prerelease identifier (e.g., alpha, beta, rc). Used only if is_prerelease=true."
+        required: false
+        type: string
+        default: "alpha"
 
 jobs:
   build-and-upload:
@@ -15,12 +34,13 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+
       - name: Set up Go
         uses: actions/setup-go@v5
-      
+
       - name: Build project
         run: make build
-      
+
       - name: Install dbmate
         run: |
           sudo curl -fsSL -o /usr/local/bin/dbmate https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64
@@ -33,25 +53,66 @@ jobs:
       - name: Run the application
         run: make run
 
-      - name: Upload quran.db to Cloudflare R2
-        run: aws s3 cp quran.db s3://quran-db/quran.db --endpoint-url ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
+      - name: Calculate version
+        id: calculate_version
+        run: |
+          # Get the latest tag
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          echo "Latest tag: $LATEST_TAG"
+          
+          # Split tag into components
+          IFS='.' read -r MAJOR MINOR PATCH <<< "${LATEST_TAG//v/}"
+
+          # Increment version based on release type
+          case "${{ github.event.inputs.release_type }}" in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+
+          # Construct version
+          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+
+          # Add prerelease identifier if specified
+          if [ "${{ github.event.inputs.is_prerelease }}" = "true" ]; then
+            NEW_VERSION="${NEW_VERSION}-${{ github.event.inputs.prerelease_id }}"
+          fi
+
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "Calculated version: $NEW_VERSION"
+
+      - name: Rename quran.db to include version
+        run: |
+          mv quran.db quran-${{ env.VERSION }}.db
+
+      - name: Upload quran-${{ env.VERSION }}.db to Cloudflare R2
+        run: aws s3 cp quran-${{ env.VERSION }}.db s3://quran-db/quran-${{ env.VERSION }}.db --endpoint-url ${{ secrets.CLOUDFLARE_R2_ENDPOINT }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}
 
-      - name: Upload Assets to GitHub Release
+      - name: Upload quran-${{ env.VERSION }}.db to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            quran.db
+            quran-${{ env.VERSION }}.db
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Assets
+      - name: Upload bin/* and quran-${{ env.VERSION }}.db to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             ./bin/*
-            quran.db
+            quran-${{ env.VERSION }}.db
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
