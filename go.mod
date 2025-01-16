@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	github.com/spf13/cobra v1.8.1
-	modernc.org/sqlite v1.34.4
+	modernc.org/sqlite v1.34.5
 )
 
 require (
