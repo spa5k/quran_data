@@ -3,7 +3,7 @@ module github.com/spa5k/quran_data
 go 1.22.2
 
 require (
-	github.com/spf13/cobra v1.9.0
+	github.com/spf13/cobra v1.9.1
 	modernc.org/sqlite v1.35.0
 )
 
