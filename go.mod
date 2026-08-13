@@ -2,7 +2,7 @@ module github.com/spa5k/quran_data
 
 go 1.25.0
 
-toolchain go1.26.2
+toolchain go1.26.6
 
 require (
 	github.com/spf13/cobra v1.10.2
