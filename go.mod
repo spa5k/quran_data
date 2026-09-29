@@ -6,7 +6,7 @@ toolchain go1.27.1
 
 require (
 	github.com/spf13/cobra v1.10.2
-	modernc.org/sqlite v1.60.0
+	modernc.org/sqlite v1.60.1
 )
 
 require (
